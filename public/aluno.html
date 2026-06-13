@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar de Influência - Conectar</title>
+    <style>
+        body { background-color: #1e1e1e; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .container { width: 85%; max-width: 400px; background: #252526; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #555; background: #1e1e1e; color: white; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 14px; margin-top: 15px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Radar de Influência</h2>
+        <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">Quem você chamaria para resolver um bug crítico hoje?</p>
+        <input type="text" id="meu-nome" placeholder="Seu Nome Completo">
+        <input type="text" id="nome-colega" placeholder="Nome do Colega">
+        <button id="btn-enviar">Enviar Conexão</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById('btn-enviar').addEventListener('click', () => {
+            const origem = document.getElementById('meu-nome').value.trim();
+            const destino = document.getElementById('nome-colega').value.trim();
+
+            if (origem && destino) {
+                // Envia os dados para o servidor rodar em tempo real
+                socket.emit('nova_ligacao', { origem, destino });
+                
+                // Mensagem de sucesso na tela do celular
+                document.body.innerHTML = `
+                    <div class='container'>
+                        <h2 style='color: #28a745;'>Sucesso!</h2>
+                        <p>Sua conexão foi enviada diretamente para o gráfico na tela da apresentação.</p>
+                    </div>`;
+            } else {
+                alert("Por favor, preencha ambos os campos!");
+            }
+        });
+    </script>
+</body>
+</html>
