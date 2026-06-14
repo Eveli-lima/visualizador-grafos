@@ -13,7 +13,7 @@ class Grafo {
 
     adicionarAresta(origem, destino, peso) {
         if (this.adjacencias.has(origem) && this.adjacencias.has(destino)) {
-            // Agora adiciona APENAS a ida (Unidirecional)
+            // Adiciona APENAS a ida (Unidirecional)
             this.adjacencias.get(origem).push({ no: destino, peso: peso });
         }
     }

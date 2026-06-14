@@ -20,7 +20,7 @@ function renderizarMapa() {
     for (let [origem, vizinhos] of grafo.adjacencias.entries()) {
         const noOrigem = grafo.nos.get(origem);
         for (let vizinho of vizinhos) {
-            const idAresta = `${origem}->${vizinho.no}`; // Identificador único direcionado
+            const idAresta = `${origem}->${vizinho.no}`; 
             if (!desenhadas.has(idAresta)) {
                 const noDestino = grafo.nos.get(vizinho.no);
                 
@@ -65,7 +65,7 @@ function padronizarNome(nome) {
     if (!nome) return "";
     let nomeLimpo = nome.trim().replace(/\s+/g, ' ').toLowerCase();
     return nomeLimpo.split(' ').map(palavra => {
-        return palavra.charAt(0).toUpperCase() + palabra.slice(1);
+        return palavra.charAt(0).toUpperCase() + palavra.slice(1);
     }).join(' ');
 }
 
@@ -73,13 +73,13 @@ function padronizarNome(nome) {
 const socket = io();
 
 socket.on('atualizar_mapa', (dados) => {
-    const origem = padronizarNome(dados.origem);
+    const origen = padronizarNome(dados.origem);
     const destino = padronizarNome(dados.destino);
 
-    if (!grafo.nos.has(origem)) grafo.adicionarNo(origem, 0, 0);
+    if (!grafo.nos.has(origen)) grafo.adicionarNo(origen, 0, 0);
     if (!grafo.nos.has(destino)) grafo.adicionarNo(destino, 0, 0);
 
-    grafo.adicionarAresta(origem, destino, 1);
+    grafo.adicionarAresta(origen, destino, 1);
 
     // EFEITO DEBUGGER
     console.clear();

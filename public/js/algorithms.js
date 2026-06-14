@@ -1,7 +1,4 @@
-function encontrarCaminhoCurto(grafo, idInicio, idFim) {
-    // Implementação de Dijkstra ou A*.
-    // Recebe a instância do Grafo, processa as prioridades e retorna um array com a sequência de IDs dos nós que formam a melhor rota.
-}function encontrarCaminhoCurto(grafo, inicio, fim) {
+function encontrarCaminhoCurto(grafo, inicio, fim) {
     const distancias = new Map();
     const anteriores = new Map();
     const naoVisitados = new Set(grafo.nos.keys());

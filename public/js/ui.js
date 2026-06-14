@@ -35,18 +35,19 @@ function desenharAresta(x1, y1, x2, y2, idOrigem, idDestino, onClickCallback, pe
     svgMap.appendChild(linha);
 }
 
-function desenharNo(x, y, id) {
+function desenharNo(x, y, id, raio = 12) {
     const circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circulo.setAttribute("cx", x);
     circulo.setAttribute("cy", y);
-    circulo.setAttribute("r", "12");
+    circulo.setAttribute("r", raio); // Usa o raio dinâmico calculado
     circulo.setAttribute("fill", "#007acc");
     svgMap.appendChild(circulo);
     
     const texto = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    texto.setAttribute("x", x - 5);
-    texto.setAttribute("y", y - 20);
+    texto.setAttribute("x", x - 15);
+    texto.setAttribute("y", y - (raio + 8)); // Posiciona o texto dinamicamente acima do nó
     texto.setAttribute("fill", "white");
+    texto.setAttribute("font-size", "14px");
     texto.textContent = id;
     svgMap.appendChild(texto);
 }
