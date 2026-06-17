@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radar de Influência</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,6 +15,7 @@
             <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
     </button>
+
     <div class="hud-container">
         <div class="hud-header">
             <h2>RADAR DE INFLUÊNCIA</h2>
@@ -40,7 +42,22 @@
                 </div>
             </div>
             
-            <h3 style="margin-top: 25px;">Top Influenciadores</h3>
+            <div class="hud-secao">
+                <h3>Filtro de Esquadrão</h3>
+                <span id="label-filtro" class="metrica-titulo" style="margin-top: 5px;">Mostrar laços acima de: 0 Anos</span>
+                <input type="range" id="filtro-peso" min="0" max="10" value="0" class="slider-neon">
+            </div>
+
+            <div class="hud-secao">
+                <h3>Rota de Confiança (Dijkstra)</h3>
+                <div style="display: flex; gap: 5px; margin-bottom: 8px;">
+                    <input type="text" id="rota-origem" placeholder="Origem" class="input-pequeno">
+                    <input type="text" id="rota-destino" placeholder="Destino" class="input-pequeno">
+                </div>
+                <button id="btn-rota" style="width: 100%;">Traçar Rota Segura</button>
+            </div>
+            
+            <h3 style="margin-top: 20px;">Top Capital de Confiança</h3>
             <ul id="lista-ranking">
                 <li class="aguardando">Aguardando telemetria...</li>
             </ul>
@@ -48,6 +65,28 @@
     </div>
     
     <svg id="mapa-svg"></svg>
+
+    <div id="data-drawer">
+        <div id="drawer-handle">
+            <span class="handle-icon"></span>
+            REGISTRO DE TELEMETRIA (DADOS BRUTOS)
+            <span class="handle-icon"></span>
+        </div>
+        <div class="drawer-content">
+            <table id="tabela-conexoes">
+                <thead>
+                    <tr>
+                        <th>Nó de Origem</th>
+                        <th>Nó de Destino</th>
+                        <th>Força da Conexão</th>
+                        <th>Status da Ligação</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    </tbody>
+            </table>
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/graph.js"></script>

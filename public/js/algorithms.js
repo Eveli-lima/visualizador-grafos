@@ -23,10 +23,13 @@ function encontrarCaminhoCurto(grafo, inicio, fim) {
         if (noAtual === null || noAtual === fim) break;
         naoVisitados.delete(noAtual);
 
-        let vizinhos = grafo.adjacencias.get(noAtual);
+        let vizinhos = grafo.adjacencias.get(noAtual) || [];
         for (let vizinho of vizinhos) {
             if (naoVisitados.has(vizinho.no)) {
-                let novaDist = distancias.get(noAtual) + vizinho.peso;
+                // A MAGIA: 1 dividido pelo peso. Quantos mais anos, menor a "distância" matemática.
+                let pesoInvertido = 1 / vizinho.peso; 
+                let novaDist = distancias.get(noAtual) + pesoInvertido;
+                
                 if (novaDist < distancias.get(vizinho.no)) {
                     distancias.set(vizinho.no, novaDist);
                     anteriores.set(vizinho.no, noAtual);

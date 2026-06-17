@@ -134,6 +134,7 @@
         
         <input type="text" id="meu-nome" placeholder="SEU IDENTIFICADOR (NOME)" autocomplete="off" autocapitalize="words">
         <input type="text" id="nome-colega" placeholder="ALVO DA CONEXÃO (COLEGA)" autocomplete="off" autocapitalize="words">
+        <input type="number" id="tempo-conhece" placeholder="ANOS DE CONEXÃO (EX: 3)" autocomplete="off" min="0" step="1">
         
         <button id="btn-enviar">Estabelecer Link</button>
     </div>
@@ -145,23 +146,27 @@
         document.getElementById('btn-enviar').addEventListener('click', () => {
             const origem = document.getElementById('meu-nome').value.trim();
             const destino = document.getElementById('nome-colega').value.trim();
+            // Captura o valor, se estiver vazio assume 0 (conheceram-se agora)
+            const anos = parseFloat(document.getElementById('tempo-conhece').value) || 0; 
+            
+            // O peso base é 1. Somamos os anos para dar mais espessura.
+            const pesoDaAresta = 1 + anos; 
 
             if (origem && destino) {
-                // Dispara os dados para o ecrã principal
-                socket.emit('nova_ligacao', { origem, destino });
+                // AGORA ENVIAMOS O PESO TAMBÉM
+                socket.emit('nova_ligacao', { origem, destino, peso: pesoDaAresta });
                 
-                // Transforma o formulário num ecrã de sucesso alinhado ao HUD
                 document.body.innerHTML = `
                     <div class='container'>
                         <div style="font-size: 50px; color: #df73ff; text-shadow: 0 0 20px #df73ff; margin-bottom: 10px;">✓</div>
                         <h2>Link Estabelecido</h2>
                         <p class="subtitle" style="text-transform: none; color: #bbb; margin-bottom: 30px;">
-                            Telemetria sincronizada com o Radar de Influência.
+                            Força da conexão registada: Nível ${pesoDaAresta}
                         </p>
                         <button onclick="location.reload()" style="animation: none;">Nova Transmissão</button>
                     </div>`;
             } else {
-                alert("ACESSO NEGADO: Parâmetros incompletos. Preencha ambos os identificadores.");
+                alert("ACESSO NEGADO: Parâmetros incompletos. Preencha os identificadores.");
             }
         });
     </script>
