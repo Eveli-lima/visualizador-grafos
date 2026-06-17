@@ -7,12 +7,35 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="painel-controle">
-        <button id="btn-limpar">Limpar Mapa</button>
-        <button id="btn-votar">Escolher Colaborador</button> <div id="painel-ranking">
-            <h3>OS MAIS VOTADOS</h3>
+    <div class="hud-container">
+        <div class="hud-header">
+            <h2>RADAR DE INFLUÊNCIA</h2>
+            <div class="botoes-acao">
+                <button id="btn-limpar">Limpar Dados</button>
+                <button id="btn-votar">Nova Conexão</button>
+            </div>
+        </div>
+        
+        <div class="hud-body">
+            <h3>Métricas do Ecossistema</h3>
+            <div class="metricas-grid">
+                <div class="metrica-card">
+                    <span class="metrica-titulo">Densidade</span>
+                    <span class="metrica-valor" id="metrica-densidade">0%</span>
+                </div>
+                <div class="metrica-card">
+                    <span class="metrica-titulo">Confiança</span>
+                    <span class="metrica-valor" id="metrica-mutuas">0</span>
+                </div>
+                <div class="metrica-card">
+                    <span class="metrica-titulo">Ocultos</span>
+                    <span class="metrica-valor" id="metrica-ocultos">0</span>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 25px;">Top Influenciadores</h3>
             <ul id="lista-ranking">
-                <li style="color: #aaa; font-size: 12px;">Aguardando conexões...</li>
+                <li class="aguardando">Aguardando telemetria...</li>
             </ul>
         </div>
     </div>

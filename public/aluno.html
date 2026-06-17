@@ -2,23 +2,140 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radar de Influência - Conectar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar de Influência - Terminal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #1e1e1e; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .container { width: 85%; max-width: 400px; background: #252526; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #555; background: #1e1e1e; color: white; font-size: 16px; box-sizing: border-box; }
-        button { width: 100%; padding: 14px; margin-top: 15px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        button:hover { background-color: #218838; }
+        body { 
+            background-color: #050508; /* Preto Abissal */
+            color: white; 
+            font-family: 'Rajdhani', sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            /* Grelha Holográfica no fundo (Igual ao ecrã principal) */
+            background-image: 
+                linear-gradient(rgba(176, 38, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(176, 38, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .container { 
+            width: 90%; 
+            max-width: 400px; 
+            /* HUD Glassmorphism */
+            background: rgba(15, 10, 25, 0.65); 
+            padding: 40px 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(176, 38, 255, 0.05);
+            text-align: center; 
+            border: 1px solid rgba(176, 38, 255, 0.2);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Feixe de laser no topo da cápsula */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, #df73ff, #b026ff, transparent);
+            box-shadow: 0 0 12px #b026ff;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #df73ff;
+            letter-spacing: 3px;
+            font-size: 22px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(223, 115, 255, 0.5);
+        }
+
+        p.subtitle {
+            color: #a050ff; 
+            font-size: 15px; 
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 16px; 
+            margin: 10px 0; 
+            border-radius: 6px; 
+            border: 1px solid rgba(176, 38, 255, 0.3); 
+            background: rgba(0, 0, 0, 0.5); 
+            color: white; 
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px; 
+            font-weight: 600;
+            box-sizing: border-box; 
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 5px rgba(176, 38, 255, 0.05);
+        }
+
+        input::placeholder {
+            color: #555;
+            font-weight: 500;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #b026ff;
+            background: rgba(176, 38, 255, 0.05);
+            box-shadow: 0 0 15px rgba(176, 38, 255, 0.3), inset 0 0 10px rgba(176, 38, 255, 0.2);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 16px; 
+            margin-top: 25px; 
+            background: rgba(176, 38, 255, 0.1); 
+            color: #df73ff; 
+            border: 1px solid rgba(176, 38, 255, 0.5); 
+            border-radius: 6px; 
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 8px rgba(176, 38, 255, 0.2);
+            animation: pulse-border 2.5s infinite alternate;
+        }
+
+        button:active { 
+            transform: translateY(2px); 
+            box-shadow: 0 0 5px rgba(176, 38, 255, 0.3);
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: inset 0 0 8px rgba(176, 38, 255, 0.2), 0 0 5px rgba(176, 38, 255, 0.1); }
+            100% { box-shadow: inset 0 0 15px rgba(176, 38, 255, 0.5), 0 0 15px rgba(176, 38, 255, 0.3); border-color: #df73ff; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Radar de Influência</h2>
-        <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">Quem você chamaria para resolver um bug crítico hoje?</p>
-        <input type="text" id="meu-nome" placeholder="Seu Nome Completo">
-        <input type="text" id="nome-colega" placeholder="Nome do Colega">
-        <button id="btn-enviar">Enviar Conexão</button>
+    <div class="container" id="form-container">
+        <h2>Transmissão de Dados</h2>
+        <p class="subtitle">Insira as coordenadas da sua rede de confiança</p>
+        
+        <input type="text" id="meu-nome" placeholder="SEU IDENTIFICADOR (NOME)" autocomplete="off" autocapitalize="words">
+        <input type="text" id="nome-colega" placeholder="ALVO DA CONEXÃO (COLEGA)" autocomplete="off" autocapitalize="words">
+        
+        <button id="btn-enviar">Estabelecer Link</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -30,17 +147,21 @@
             const destino = document.getElementById('nome-colega').value.trim();
 
             if (origem && destino) {
-                // Envia os dados para o servidor rodar em tempo real
+                // Dispara os dados para o ecrã principal
                 socket.emit('nova_ligacao', { origem, destino });
                 
-                // Mensagem de sucesso na tela do celular
+                // Transforma o formulário num ecrã de sucesso alinhado ao HUD
                 document.body.innerHTML = `
                     <div class='container'>
-                        <h2 style='color: #28a745;'>Sucesso!</h2>
-                        <p>Sua conexão foi enviada diretamente para o gráfico na tela da apresentação.</p>
+                        <div style="font-size: 50px; color: #df73ff; text-shadow: 0 0 20px #df73ff; margin-bottom: 10px;">✓</div>
+                        <h2>Link Estabelecido</h2>
+                        <p class="subtitle" style="text-transform: none; color: #bbb; margin-bottom: 30px;">
+                            Telemetria sincronizada com o Radar de Influência.
+                        </p>
+                        <button onclick="location.reload()" style="animation: none;">Nova Transmissão</button>
                     </div>`;
             } else {
-                alert("Por favor, preencha ambos os campos!");
+                alert("ACESSO NEGADO: Parâmetros incompletos. Preencha ambos os identificadores.");
             }
         });
     </script>
