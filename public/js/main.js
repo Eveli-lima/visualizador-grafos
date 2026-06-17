@@ -216,3 +216,14 @@ document.getElementById('btn-votar').addEventListener('click', () => {
 });
 
 renderizarMapa();
+
+// === LÓGICA DO MENU MOBILE (SANDUÍCHE) ===
+const btnMenu = document.getElementById('btn-menu-mobile');
+const hudContainer = document.querySelector('.hud-container');
+
+if (btnMenu && hudContainer) {
+    btnMenu.addEventListener('click', () => {
+        // A função toggle liga e desliga a classe alternadamente a cada clique
+        hudContainer.classList.toggle('painel-aberto');
+    });
+}

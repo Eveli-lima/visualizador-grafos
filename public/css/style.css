@@ -206,44 +206,51 @@ button:hover {
     0% { filter: none; stroke: #8a2be2; }
     100% { stroke: #df73ff; filter: drop-shadow(0 0 4px #df73ff); }
 }
-/* === RESPONSIVIDADE MOBILE (Libertar a Teia) === */
+/* === MENU SANDUÍCHE (MOBILE) === */
+.menu-sanduiche {
+    display: none; /* Fica invisível no computador */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background: rgba(15, 10, 25, 0.8);
+    border: 1px solid #b026ff;
+    color: #df73ff;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(176, 38, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.menu-sanduiche:active {
+    transform: scale(0.9);
+}
+
+/* === RESPONSIVIDADE MOBILE (Gaveta Deslizante) === */
 @media (max-width: 768px) {
+    .menu-sanduiche {
+        display: block; /* Mostra o botão no telemóvel */
+    }
+
     .hud-container {
-        width: 90%;
-        left: 5%;
-        top: auto;
-        bottom: 20px;
-        max-height: 40vh; /* O painel ocupa no máximo 40% da altura do telemóvel */
-        overflow-y: auto; /* Ativa uma rolagem interna se a lista for longa */
-        background: rgba(15, 10, 25, 0.85); /* Fundo ligeiramente mais sólido no telemóvel */
+        width: 85%;
+        max-width: 320px;
+        /* Esconde o painel totalmente fora do ecrã à esquerda */
+        left: -100%; 
+        top: 0;
+        bottom: 0;
+        height: 100vh;
+        border-radius: 0 12px 12px 0; /* Arredonda apenas a ponta direita */
+        /* A magia do movimento suave */
+        transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+        background: rgba(10, 5, 15, 0.95);
+        overflow-y: auto;
     }
 
-    .hud-header {
-        padding: 15px;
+    /* Esta é a classe que o JavaScript vai ligar e desligar */
+    .hud-container.painel-aberto {
+        left: 0; /* Traz o painel de volta para a tela */
+        box-shadow: 15px 0 50px rgba(0,0,0,0.9); /* Sombra forte para não se misturar com o grafo */
     }
-
-    .hud-header h2 {
-        font-size: 15px;
-        margin-bottom: 10px;
-    }
-    
-    .hud-body {
-        padding: 15px;
-    }
-
-    .metrica-valor {
-        font-size: 18px; /* Reduz ligeiramente os números das métricas */
-    }
-}
-
-/* Estilizar a barra de scroll do painel para combinar com o tema Neon */
-.hud-container::-webkit-scrollbar {
-    width: 4px;
-}
-.hud-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-.hud-container::-webkit-scrollbar-thumb {
-    background: rgba(176, 38, 255, 0.5);
-    border-radius: 10px;
 }
