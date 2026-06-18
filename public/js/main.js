@@ -26,7 +26,6 @@ async function renderizarMapa() {
                 inDegrees.set(vizinho.no, (inDegrees.get(vizinho.no) || 0) + vizinho.peso);
             }
         }
-
     }
 
     const talentosOcultos = Array.from(inDegrees.values()).filter(votos => votos === 0).length;
@@ -161,6 +160,29 @@ function padronizarNome(nome) {
 // === EVENTOS E INTEGRAÇÕES ===
 const socket = io();
 
+// === RECEBER O HISTÓRICO DO BANCO MONGODB ===
+socket.on('carregar_historico', (historico) => {
+    grafo.nos.clear();
+    grafo.adjacencias.clear();
+
+    if (historico && historico.length > 0) {
+        historico.forEach(registro => {
+            const origem = padronizarNome(registro.origem);
+            const destino = padronizarNome(registro.destino);
+            const peso = registro.peso || 1;
+
+            if (!grafo.nos.has(origem)) grafo.adicionarNo(origem, 0, 0);
+            if (!grafo.nos.has(destino)) grafo.adicionarNo(destino, 0, 0);
+
+            grafo.adicionarAresta(origem, destino, peso);
+        });
+
+        organizarOrganicamente();
+    }
+    
+    renderizarMapa();
+});
+
 socket.on('atualizar_mapa', (dados) => {
     const origem = padronizarNome(dados.origem); const destino = padronizarNome(dados.destino);
     const pesoRecebido = dados.peso || 1; 
@@ -193,7 +215,7 @@ document.getElementById('btn-rota').addEventListener('click', () => {
     // Traça a rota matemática
     const caminho = encontrarCaminhoCurto(grafo, origem, destino);
     
-    // Redesenha a tela limpa e por cima desenha a linha Dourada
+    // Redesenha a tela limpa e por cima desenha o coração
     renderizarMapa().then(() => {
         if(caminho.length > 0) destacarCaminho(grafo, caminho);
         else alert("Nenhuma ponte de confiança encontrada entre estas pessoas!");
@@ -214,6 +236,7 @@ if (btnVotar) {
         window.open('/aluno.html', '_blank');
     });
 }
+
 // === GAVETA DE DADOS (TABLE DRAWER) ===
 const dataDrawer = document.getElementById('data-drawer');
 const drawerHandle = document.getElementById('drawer-handle');
@@ -228,7 +251,7 @@ function atualizarTabelaDados(pesoMinimoParaAparecer) {
     const corpoTabela = document.getElementById('corpo-tabela');
     if (!corpoTabela) return;
     
-    corpoTabela.innerHTML = ''; // Limpa a tabela antes de injetar dados novos
+    corpoTabela.innerHTML = ''; 
     
     if (grafo.adjacencias.size === 0) {
         corpoTabela.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#666; padding: 20px;">Nenhuma telemetria capturada na rede.</td></tr>';
@@ -237,19 +260,16 @@ function atualizarTabelaDados(pesoMinimoParaAparecer) {
 
     for (let [origem, vizinhos] of grafo.adjacencias.entries()) {
         for (let vizinho of vizinhos) {
-            // Respeita o filtro de esquadrão: só mostra na tabela o que estiver visível na teia
             if (vizinho.peso < pesoMinimoParaAparecer) continue;
 
             const tr = document.createElement('tr');
             
-            // Analisa se a ligação é mútua para dar destaque visual
             const destinoEscolhas = grafo.adjacencias.get(vizinho.no);
             const isMutuo = destinoEscolhas ? destinoEscolhas.some(v => v.no === origem && v.peso >= pesoMinimoParaAparecer) : false;
             
             const statusText = isMutuo ? '⇄ Recíproco (Match)' : '→ Unidirecional';
             const statusClass = isMutuo ? 'td-mutuo' : 'td-unidirecional';
 
-            // O peso real da conexão agora é medido em anos de confiança
             const anosConexao = vizinho.peso - 1; 
 
             tr.innerHTML = `
